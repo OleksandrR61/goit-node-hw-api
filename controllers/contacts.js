@@ -1,10 +1,10 @@
 const fs = require('fs/promises');
 const path = require('path');
 
-const { catchAsyncError } = require('../utilites/');
+const { catchAsyncError } = require('../utilites');
 const ResError = require("../utilites/ResError");
 
-const contactsPath = path.join(__dirname, 'contacts.json');
+const contactsPath = path.join(__dirname, '../models', 'contacts.json');
 
 const listContacts = catchAsyncError(async (_, res, next) => {
   res.status(200).json({
