@@ -5,7 +5,15 @@ const {
     removeContactFromDb,
     updateContactFromDb,
     updateContactFavoriteFromDb,
-} = require('./services');
+} = require('./contacts');
+const {
+    createUserToDb,
+    getUserFromDb,
+    createUserToken,
+    getUserById,
+    logoutUserFromDb,
+    updateUserSubscriptionFromDb,
+} = require('./users');
 
 module.exports = {
     getAllContactsFromDb,
@@ -14,4 +22,10 @@ module.exports = {
     removeContactFromDb,
     updateContactFromDb,
     updateContactFavoriteFromDb,
+    createUserToDb,
+    getUserFromDb,
+    createUserToken,
+    getUserById,
+    logoutUserFromDb,
+    updateUserSubscriptionFromDb,
 };

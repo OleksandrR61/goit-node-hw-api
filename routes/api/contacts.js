@@ -7,21 +7,26 @@ const {
   removeContact,
   updateContact,
   updateFavorite,
-} = require('../../controllers/contacts');
-const { checkUserData, checkUserId } = require('../../middleware');
+} = require('../../controllers');
 
-const router = express.Router();
+const {
+  checkContactData,
+  checkId,
+  checkToken
+} = require('../../middleware');
 
-router.get('/', listContacts);
+const contactsRouter = express.Router();
 
-router.get('/:contactId', checkUserId, getContactById);
+contactsRouter.get('/', checkToken, listContacts);
 
-router.post('/', checkUserData, addContact);
+contactsRouter.get('/:contactId', checkToken, checkId, getContactById);
 
-router.delete('/:contactId', checkUserId, removeContact);
+contactsRouter.post('/', checkToken, checkContactData, addContact);
 
-router.put('/:contactId', checkUserId, checkUserData, updateContact);
+contactsRouter.delete('/:contactId', checkToken, checkId, removeContact);
 
-router.patch('/:contactId/favorite', checkUserId, checkUserData, updateFavorite);
+contactsRouter.put('/:contactId', checkToken, checkId, checkContactData, updateContact);
 
-module.exports = router;
+contactsRouter.patch('/:contactId/favorite', checkToken, checkId, checkContactData, updateFavorite);
+
+module.exports = contactsRouter;

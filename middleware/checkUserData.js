@@ -1,66 +1,57 @@
 const Joi = require('joi');
 
-const { ResError } = require('../utilites/');
+const { ResError } = require('../utilites');
 
-const checkNewUser = (data) => Joi.object().options({ abortEarly: false }).keys({
-    name: Joi.string().pattern(/^([A-Za-z0-9- ]?){1,30}(\s*)?$/).required().messages({
-        'any.required': "missing required name field",
-        'string.pattern.base': "name must be a valid"
-    }),
-    email: Joi.string().email().min(3).max(30).required().messages({
-        'any.required': "missing required email field"
-    }),
-    phone: Joi.string().pattern(/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){2,14}(\s*)?$/).required().messages({
-        'any.required': "missing required phone field",
-        'string.pattern.base': "phone must be a valid phone number"
-    }),
-    favorite: Joi.boolean(),
-}).messages({'object.missing': "missing fields"}).validate(data);
+const SUBSCRIBES = ['starter', 'pro', 'business'];
 
-const checkUpdateUser = (data) => Joi.object().options({ abortEarly: false }).keys({
-    name: Joi.string().pattern(/^([A-Za-z0-9- ]?){1,30}(\s*)?$/).messages({
-        'string.pattern.base': "name must be a valid"
-    }),
-    email: Joi.string().email().min(3).max(30),
-    phone: Joi.string().pattern(/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){2,14}(\s*)?$/).messages({
-        'string.pattern.base': "phone must be a valid phone number"
-    }),
-    favorite: Joi.boolean(),
-}).or('name', 'email', 'phone', 'favorite').messages({'object.missing': "missing fields"}).validate(data);
+const checkNewUser = data => {
+    data = {
+        email: data.email,
+        password: data.password
+    };
+    
+    return Joi.object().options({ abortEarly: false }).keys({
+        email: Joi.string().email().min(3).max(30).required().messages({
+            'any.required': "missing required email field"
+        }),
+        password: Joi.string().alphanum().min(8).max(32).required().messages({
+            'any.required': "missing required password field"
+        }),
+    }).validate(data);
+};
 
-const checkUpdateFavorite = (data) => Joi.object().options({ abortEarly: false }).keys({
-    name: Joi.string(),
-    email: Joi.string(),
-    phone: Joi.string(),
-    favorite: Joi.boolean().required().messages({
-        'any.required': "missing field favorite"
-    }),
-}).validate(data);
+const checkSubscribe = data => {
+    data = { subscription: data.subscription };
 
-exports.checkUserData = (req, res, next) => {
+    return Joi.object().options({ abortEarly: false }).keys({
+        subscription: Joi.string().valid(...SUBSCRIBES).required().messages({
+            'any.required': "missing required subscription field"
+        }),
+    }).validate(data);
+}
+
+const checkUserData = (req, res, next) => {
     let validateSchema;
 
     switch (req.method) {
         case "POST": validateSchema = checkNewUser;
             break;
-        case "PUT": validateSchema = checkUpdateUser;
-            break;
-        case "PATCH": if(req.url === `/${req.params.contactId}/favorite`) {
-                validateSchema = checkUpdateFavorite;
-            };
+        case "PATCH": validateSchema = checkSubscribe;
             break;
         default: next(new ResError(404, "Not Found"));
     };
 
-    const { error, body } = validateSchema(req.body);
+    const { error, value } = validateSchema(req.body);
     
     if (error) {
         return next(new ResError(400, error.details.map(error => error.message).join(', ')));
     };
 
     res.body = {
-        ...body,
+        ...value,
     };
 
     next();
-}
+};
+
+module.exports = checkUserData;
