@@ -19,12 +19,14 @@ const Contact = model('contact', new Schema(
             type: Boolean,
             default: false,
         },
+        owner: {
+            type: Schema.Types.ObjectId,
+            ref: 'user',
+        },
     },
     {
         versionKey: false,
     }
 ));
 
-module.exports = {
-    Contact,
-};
+module.exports = Contact;
