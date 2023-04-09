@@ -12,6 +12,7 @@ const {
     logoutUser,
     getCurrentUser,
     patchSubscription,
+    patchAvatar,
 } = require('./Users');
 
 
@@ -27,4 +28,5 @@ module.exports = {
     logoutUser,
     getCurrentUser,
     patchSubscription,
+    patchAvatar,
 };

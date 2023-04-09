@@ -4,6 +4,7 @@ const createUserToken = require('./createUserToken');
 const getUserById = require('./getUserById');
 const logoutUserFromDb = require('./logoutUserFromDb');
 const updateUserSubscriptionFromDb = require('./updateUserSubscriptionFromDb');
+const updateUserAvatarFromDb = require('./updateUserAvatarFromDb');
 
 module.exports = {
     createUserToDb,
@@ -12,4 +13,5 @@ module.exports = {
     getUserById,
     logoutUserFromDb,
     updateUserSubscriptionFromDb,
+    updateUserAvatarFromDb,
 };
