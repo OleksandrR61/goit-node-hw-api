@@ -28,7 +28,13 @@ const checkSubscribe = data => {
             'any.required': "missing required subscription field"
         }),
     }).validate(data);
-}
+};
+
+const checkAvatar = data => {
+    return {
+        value: data,
+    };
+};
 
 const checkUserData = (req, res, next) => {
     let validateSchema;
@@ -36,7 +42,11 @@ const checkUserData = (req, res, next) => {
     switch (req.method) {
         case "POST": validateSchema = checkNewUser;
             break;
-        case "PATCH": validateSchema = checkSubscribe;
+        case "PATCH": if (req.url === '/') {
+                validateSchema = checkSubscribe;
+            } else if (req.url === '/avatar') {
+                validateSchema = checkAvatar;
+            };
             break;
         default: next(new ResError(404, "Not Found"));
     };
