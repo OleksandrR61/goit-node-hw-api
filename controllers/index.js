@@ -13,6 +13,8 @@ const {
     getCurrentUser,
     patchSubscription,
     patchAvatar,
+    verifyUser,
+    reSendVerifyUser,
 } = require('./Users');
 
 
@@ -29,4 +31,6 @@ module.exports = {
     getCurrentUser,
     patchSubscription,
     patchAvatar,
+    verifyUser,
+    reSendVerifyUser,
 };

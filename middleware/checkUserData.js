@@ -36,11 +36,27 @@ const checkAvatar = data => {
     };
 };
 
+const checkVerifyUser = data => {
+    data = {
+        email: data.email,
+    };
+    
+    return Joi.object().options({ abortEarly: false }).keys({
+        email: Joi.string().email().min(3).max(30).required().messages({
+            'any.required': "missing required email field"
+        }),
+    }).validate(data);
+};
+
 const checkUserData = (req, res, next) => {
     let validateSchema;
 
     switch (req.method) {
-        case "POST": validateSchema = checkNewUser;
+        case "POST": if (req.url === '/verify') {
+                validateSchema = checkVerifyUser; 
+            } else {
+                validateSchema = checkNewUser;
+            };
             break;
         case "PATCH": if (req.url === '/') {
                 validateSchema = checkSubscribe;

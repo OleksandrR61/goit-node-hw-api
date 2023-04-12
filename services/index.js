@@ -12,8 +12,7 @@ const {
     createUserToken,
     getUserById,
     logoutUserFromDb,
-    updateUserSubscriptionFromDb,
-    updateUserAvatarFromDb,
+    updateUser,
 } = require('./users');
 
 module.exports = {
@@ -28,6 +27,5 @@ module.exports = {
     createUserToken,
     getUserById,
     logoutUserFromDb,
-    updateUserSubscriptionFromDb,
-    updateUserAvatarFromDb,
+    updateUser,
 };

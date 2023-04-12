@@ -1,7 +1,7 @@
 const { User } = require('../../models');
 
-const getUserFromDb = email => {
-    return User.findOne({ email }).exec();
+const getUserFromDb = (data) => {
+    return User.findOne({ ...data }).exec();
 };
 
 module.exports = getUserFromDb;

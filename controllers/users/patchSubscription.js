@@ -1,8 +1,8 @@
 const { catchAsyncError, ResError } = require("../../utilites");
-const { updateUserSubscriptionFromDb } = require('../../services');
+const { updateUser } = require('../../services');
 
 const patchSubscription = catchAsyncError(async ({ body: { subscription }, user }, res, next) => {
-  const contact = await updateUserSubscriptionFromDb(user, subscription);
+  const contact = await updateUser(user, { subscription });
 
   if (contact) {
       res.status(200).json({

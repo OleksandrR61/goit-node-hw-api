@@ -8,13 +8,19 @@ const {
     getCurrentUser,
     patchSubscription,
     patchAvatar,
+    verifyUser,
+    reSendVerifyUser,
 } = require('../../controllers');
 
 const usersRouter = express.Router();
 
+usersRouter.get('/verify/:verificationToken', verifyUser);
+
 usersRouter.post('/register', checkUserData, addUser);
 
 usersRouter.post('/login', checkUserData, loginUser);
+
+usersRouter.post('/verify', checkUserData, reSendVerifyUser);
 
 usersRouter.post('/logout', checkToken, logoutUser);
 
